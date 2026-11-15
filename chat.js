@@ -38,11 +38,6 @@ const SYSTEM_PROMPT = [
   "- add_item：新增一条待办",
   "- query_items：查询待办（可以按「是否完成」和「关键字」筛）",
   "",
-  "什么时候用工具：",
-  "- 他说「帮我记一条」「加个待办」「把这个写进去」→ 用 add_item，标题照他的话说，不要自己编",
-  "- 他问「我还有哪些任务」「有几条没做完」「有没有关于部署的」→ 用 query_items",
-  "- 只是闲聊或问方法（比如「怎么做部署」）→ 不要用工具，直接回答",
-  "",
   "用工具之后的回答要求：",
   "1. 先说结果，用一两句话说清楚你做了什么、查到了什么。",
   "2. 查到多条时用列表，每条一行，带上「已完成/待办」状态。",
@@ -60,9 +55,7 @@ const TOOLS = [
     type: "function",
     function: {
       name: "add_item",
-      description:
-        "往用户的待办清单里新增一条待办。当用户明确要求记录某事时调用，" +
-        "例如「帮我记一条」「加个待办」「把这个任务记下来」。标题用用户的原话，不要改写。",
+      description: "新增待办。",
       parameters: {
         type: "object",
         properties: {
@@ -83,9 +76,7 @@ const TOOLS = [
     type: "function",
     function: {
       name: "query_items",
-      description:
-        "查询用户的待办清单，返回符合条件的所有条目。" +
-        "当用户询问自己的任务情况时调用，例如「我还有哪些任务」「有几条没做完」「有没有关于部署的待办」。",
+      description: "查询待办。",
       parameters: {
         type: "object",
         properties: {
