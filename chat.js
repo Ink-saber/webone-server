@@ -208,6 +208,14 @@ function runTool(name, args, userId) {
   return { ok: false, error: "没有叫 " + name + " 的工具" };
 }
 
+/* ---------- 当前时间（北京时间） ----------
+   服务器跑在 UTC，用户在中国，差 8 小时。
+   这里直接按 +8 计算，避免用户说「明天」「今晚」时算错一天。 */
+function nowInChina() {
+  const d = new Date(Date.now() + 8 * 3600 * 1000);
+  return d.toISOString().slice(0, 16).replace("T", " ");
+}
+
 /* ---------- 历史裁剪 ---------- */
 function trimHistory(rawMessages) {
   const cleaned = [];
@@ -394,7 +402,13 @@ function register(app, fail, requireAuth) {
 
     try {
       // 对话上下文，会随着工具调用不断追加
-      const conversation = [{ role: "system", content: SYSTEM_PROMPT }].concat(history);
+      const nowStr = nowInChina();
+      const conversation = [{
+        role: "system",
+        content: SYSTEM_PROMPT +
+          "\n\n当前时间：" + nowStr + "（北京时间，格式 YYYY-MM-DD HH:mm）。" +
+          "用户说「明天」「后天」「今晚」「周五」这类相对时间时，都以这个时间为基准换算成具体日期。"
+      }].concat(history);
 
       let rounds = 0;
 
