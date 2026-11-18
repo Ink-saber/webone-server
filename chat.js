@@ -83,7 +83,9 @@ const TOOLS = [
         properties: {
           title: {
             type: "string",
-            description: "待办标题，一句话，最多 100 个字。用用户的原话，不要编造。"
+            description:
+              "待办标题，一句话，最多 100 个字。用用户的原话，但把其中的时间词去掉" +
+              "（「明天下午三点提醒我交周报」→ 标题是「交周报」，时间放进 due）。不要编造。"
           },
           note: {
             type: "string",
